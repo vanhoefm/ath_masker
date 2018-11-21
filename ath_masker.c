@@ -58,6 +58,8 @@ static int handler_pre(struct kprobe *p, struct pt_regs *regs)
 {
 #ifdef CONFIG_X86_64
 	struct ath_common *common = (struct ath_common *)regs->di;
+#elif defined  CONFIG_X86
+	struct ath_common *common = (struct ath_common *)regs->ax;
 #elif defined(CONFIG_ARM)
 	struct ath_common *common = (struct ath_common *)regs->ARM_r0;
 #endif
@@ -95,8 +97,8 @@ static int __init kprobe_init(void)
 {
 	int ret;
 
-#if !defined(CONFIG_X86_64) && !defined(CONFIG_ARM)
-	printk(KERN_ALERT "Error: this module only supports x86_64 or ARM\n");
+#if !defined(CONFIG_X86_64) && !defined(CONFIG_X86) && !defined(CONFIG_ARM)
+	printk(KERN_ALERT "Error: this module only supports x86(_64) or ARM\n");
 	return -EINVAL;
 #endif
 
