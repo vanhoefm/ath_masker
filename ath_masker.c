@@ -1,15 +1,3 @@
-/*
- * NOTE: This example is works on x86 and powerpc.
- * Here's a sample kernel module showing the use of kprobes to dump a
- * stack trace and selected registers when do_fork() is called.
- *
- * For more information on theory of operation of kprobes, see
- * Documentation/kprobes.txt
- *
- * You will see the trace data in /var/log/messages and on the console
- * whenever do_fork() is invoked to create a new process.
- */
-
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/kprobes.h>
