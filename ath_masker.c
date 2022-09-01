@@ -1,6 +1,7 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/kprobes.h>
+#include <linux/version.h>
 
 #define ETH_ALEN 6
 
@@ -70,6 +71,7 @@ static void handler_post(struct kprobe *p, struct pt_regs *regs,
 	// Nothing
 }
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 14, 0)
 /*
  * fault_handler: this is called if an exception is generated for any
  * instruction within the pre- or post-handler, or when Kprobes
@@ -82,6 +84,7 @@ static int handler_fault(struct kprobe *p, struct pt_regs *regs, int trapnr)
 	/* Return 0 because we don't handle the fault. */
 	return 0;
 }
+#endif
 
 static int __init kprobe_init(void)
 {
@@ -94,7 +97,9 @@ static int __init kprobe_init(void)
 
 	kp.pre_handler = handler_pre;
 	kp.post_handler = handler_post;
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 14, 0)
 	kp.fault_handler = handler_fault;
+#endif
 
 	ret = register_kprobe(&kp);
 	if (ret < 0) {
