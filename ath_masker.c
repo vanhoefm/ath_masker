@@ -52,7 +52,7 @@ static int handler_pre(struct kprobe *p, struct pt_regs *regs)
 #elif defined(CONFIG_ARM)
 	struct ath_common *common = (struct ath_common *)regs->ARM_r0;
 #elif defined(CONFIG_ARM64)
-  struct ath_common *common = (struct ath_common *)regs->regs[0];
+	struct ath_common *common = (struct ath_common *)regs->regs[0];
 #endif
 
 	printk("pre_handler: MAC address of device is %pM\n", common->macaddr);
